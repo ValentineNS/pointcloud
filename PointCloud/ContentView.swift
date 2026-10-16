@@ -10,6 +10,7 @@ struct ContentView: View {
 
     @State private var voxelMM: Double = 10
     @State private var showAccumulated = true
+    @State private var format: PointCloudFormat = .xyz
 
     var body: some View {
         ZStack {
@@ -79,11 +80,25 @@ struct ContentView: View {
                 }
                 .buttonStyle(.bordered)
 
-                Button("Экспорт PLY") {
+                Button("Экспорт \(format.title)") {
                     export()
                 }
                 .buttonStyle(.bordered)
                 .disabled(controller.pointCount == 0)
+            }
+
+            VStack(spacing: 2) {
+                Picker("Формат", selection: $format) {
+                    ForEach(PointCloudFormat.allCases) { f in
+                        Text(f.title).tag(f)
+                    }
+                }
+                .pickerStyle(.segmented)
+
+                Text(format.hint)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
 
             Toggle("Показывать накопленное облако", isOn: $showAccumulated)
@@ -104,11 +119,11 @@ struct ContentView: View {
 
         let df = DateFormatter()
         df.dateFormat = "yyyyMMdd_HHmmss"
-        let name = "cloud_\(df.string(from: Date())).ply"
+        let name = "cloud_\(df.string(from: Date())).\(format.fileExtension)"
         let url = FileManager.default.temporaryDirectory.appendingPathComponent(name)
 
         do {
-            try PLYWriter.write(pts, to: url, binary: true)
+            try PointCloudExporter.export(pts, to: url, format: format)
             exportURL = url
             showShare = true
         } catch {
