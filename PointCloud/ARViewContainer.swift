@@ -18,9 +18,10 @@ struct ARViewContainer: UIViewRepresentable {
         view.session = session
         view.automaticallyUpdatesLighting = false
         view.autoenablesDefaultLighting = false
-        view.scene = SCNScene()
+        let scene = SCNScene()
+        view.scene = scene
         view.debugOptions = [.showFeaturePoints]   // «сырые» точки ARKit текущего кадра
-        view.scene?.rootNode.addChildNode(context.coordinator.cloudNode)
+        scene.rootNode.addChildNode(context.coordinator.cloudNode)
         context.coordinator.view = view
         context.coordinator.startTimer()
         return view

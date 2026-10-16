@@ -22,9 +22,9 @@ enum PLYWriter {
         if binary {
             var body = Data(capacity: points.count * 12)
             for p in points {
-                var x = p.x.littleEndian
-                var y = p.y.littleEndian
-                var z = p.z.littleEndian
+                var x = p.x.bitPattern.littleEndian
+                var y = p.y.bitPattern.littleEndian
+                var z = p.z.bitPattern.littleEndian
                 withUnsafeBytes(of: &x) { body.append(contentsOf: $0) }
                 withUnsafeBytes(of: &y) { body.append(contentsOf: $0) }
                 withUnsafeBytes(of: &z) { body.append(contentsOf: $0) }
