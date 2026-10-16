@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var voxelMM: Double = 10
     @State private var showAccumulated = true
     @State private var format: PointCloudFormat = .xyz
+    @State private var showViewer = false
 
     var body: some View {
         ZStack {
@@ -42,6 +43,10 @@ struct ContentView: View {
         .onChange(of: voxelMM) { value in
             controller.store.voxelSize = Float(value / 1000.0)
         }
+        .fullScreenCover(isPresented: $showViewer) {
+            PointCloudViewerScreen(points: controller.store.points,
+                                   voxelSize: controller.store.voxelSize)
+        }
     }
 
     private var header: some View {
@@ -69,7 +74,7 @@ struct ContentView: View {
                     .frame(width: 60, alignment: .trailing)
             }
 
-            HStack(spacing: 10) {
+            HStack(spacing: 6) {
                 Button(buttonTitle) {
                     controller.toggle()
                 }
@@ -80,12 +85,19 @@ struct ContentView: View {
                 }
                 .buttonStyle(.bordered)
 
-                Button("Экспорт \(format.title)") {
+                Button("Экспорт") {
                     export()
                 }
                 .buttonStyle(.bordered)
                 .disabled(controller.pointCount == 0)
+
+                Button("3D-вид") {
+                    showViewer = true
+                }
+                .buttonStyle(.bordered)
+                .disabled(controller.pointCount == 0)
             }
+            .font(.footnote)
 
             VStack(spacing: 2) {
                 Picker("Формат", selection: $format) {
