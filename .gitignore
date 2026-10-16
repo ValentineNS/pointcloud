@@ -9,4 +9,7 @@ DerivedData/
 *.zip
 PointCloud-ipa/
 
+# Логи CI (диагностика)
+_ci_logs/
+
 .DS_Store
