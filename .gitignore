@@ -1,0 +1,12 @@
+# Сгенерированные файлы Xcode
+build/
+DerivedData/
+*.xcodeproj
+*.xcworkspace
+
+# Скачанные сборки (не хранить в репозитории)
+*.ipa
+*.zip
+PointCloud-ipa/
+
+.DS_Store

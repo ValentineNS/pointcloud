@@ -1,0 +1,35 @@
+name: PointCloud
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "15.0"
+  createIntermediateGroups: true
+
+targets:
+  PointCloud:
+    type: application
+    platform: iOS
+    sources:
+      - path: PointCloud
+        excludes:
+          - "Info.plist"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.pointcloud
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: PointCloud/Info.plist
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_STYLE: Automatic
+
+schemes:
+  PointCloud:
+    build:
+      targets:
+        PointCloud: all
+    run:
+      config: Debug
+    archive:
+      config: Release
